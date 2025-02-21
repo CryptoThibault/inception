@@ -1,1 +1,3 @@
 srcs/*.env
+*.swp
+**/*.swp
