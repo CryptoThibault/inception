@@ -1,21 +1,21 @@
-nginx:
-	cd srcs/nginx
-	./tools/generate.sh
-	docker build -t nginx .
-	docker run -d --name nginx -p 443:443 nginx
-#TEST curl -k https://localhost
+NAME = inception
 
-wordpress:
-	cd srcs/wordpress
-	./tools/generate.sh
-	docker build -t wordpress .
-	docker run -d --name wordpress -p 9000:9000 wordpress
-#TEST docker exec -it wordpress sh
-#TEST php-fpm -t
+DC = docker-compose
+DC_RUN = $(DC) up -d --build
+DC_STOP = $(DC) down
+DC_CLEAN = $(DC_STOP) --volumes --remove-orphans
 
-mariadb:
-	cd srcs/wordpress
-	./tools/generate.sh
-	docker build -t mariadb .
-	docker run -d --name mariadb -p 3306:3306 \
-	-e MARIADB_ROOT_PASSWORD=rootpassword mariadb
+all: up
+
+up:
+	$(DC_RUN)
+
+stop:
+	$(DC_STOP)
+
+clean:
+	$(DC_CLEAN)
+
+re: clean up
+
+.PHONY: all up stop clean re

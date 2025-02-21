@@ -1,1 +1,59 @@
-.yml
+version: '3.8'
+
+networks:
+  wp-network:
+    name: wp-network
+    driver: bridge
+
+services:
+  mariadb:
+    build: ./mariadb
+    container_name: mariadb
+    restart: always
+    env_file: .env
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - wp-db:/var/lib/mysql
+    networks:
+      - wp-network
+
+  wordpress:
+    build: ./wordpress
+    container_name: wordpress
+    restart: always
+    env_file: .env
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${DB_NAME}
+    volumes:
+      - wp-data:/var/www/html
+    networks:
+      - wp-network
+    depends_on:
+      - mariadb
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "443:443"
+    volumes:
+      - wp-data:/var/www/html:ro
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - wp-network
+    depends_on:
+      - wordpress
+
+volumes:
+  wp-db:
+    name: wp-db
+  wp-data:
+    name: wp-data
