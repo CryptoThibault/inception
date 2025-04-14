@@ -2,7 +2,7 @@ COMPOSE = docker compose
 COMPOSE_FILE = srcs/docker-compose.yml
 PROJECT_NAME = inception
 
-$(PROJECT_NAME): build up
+all: build up
 
 build:
 	$(COMPOSE) -p $(PROJECT_NAME) -f $(COMPOSE_FILE) build
