@@ -1,21 +1,17 @@
-NAME = inception
+COMPOSE = docker-compose
+COMPOSE_FILE = srcs/docker-compose.yml
+PROJECT_NAME = inception
 
-DC = docker-compose
-DC_RUN = $(DC) up -d --build
-DC_STOP = $(DC) down
-DC_CLEAN = $(DC_STOP) --volumes --remove-orphans
-
-all: up
+build:
+	$(COMPOSE) -p $(PROJECT_NAME) -f $(COMPOSE_FILE) build
 
 up:
-	$(DC_RUN)
+	$(COMPOSE) -p $(PROJECT_NAME) -f $(COMPOSE_FILE) up -d
 
-stop:
-	$(DC_STOP)
+down:
+	$(COMPOSE) -p $(PROJECT_NAME) -f $(COMPOSE_FILE) down
 
-clean:
-	$(DC_CLEAN)
+fclean:
+	$(COMPOSE) -p $(PROJECT_NAME) -f $(COMPOSE_FILE) down -v --rmi all --remove-orphans
 
-re: clean up
-
-.PHONY: all up stop clean re
+re: fclean build up
