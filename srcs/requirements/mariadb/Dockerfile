@@ -6,8 +6,8 @@ RUN apt-get update && \
 
 COPY ./tools/setup.sh /setup.sh
 
-RUN chmod +x /setup.sh && /setup.sh
+RUN chmod +x /setup.sh
 
 EXPOSE 3306
 
-CMD ["mysqld"]
+CMD ["mysqld", "/setup.sh"]

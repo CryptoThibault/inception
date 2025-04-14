@@ -1,40 +1,47 @@
-version: '3.8'
+version: '3.9'
 
 services:
   mariadb:
-    build: ./mariadb
+    build: ./requirements/mariadb
+    container_name: mariadb
+    restart: always
+    env_file:
+      - ./requirements/mariadb/.env
     volumes:
       - mariadb_data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wp_user
-      MYSQL_PASSWORD: wp_pass
     networks:
-      - inception
+      - inception_net
 
   wordpress:
-    build: ./wordpress
+    build: ./requirements/wordpress
+    container_name: wordpress
+    restart: always
+    env_file:
+      - ./requirements/wordpress/.env
     volumes:
       - wordpress_data:/var/www/html
     depends_on:
       - mariadb
     networks:
-      - inception
+      - inception_net
 
   nginx:
-    build: ./nginx
+    build: ./requirements/nginx
+    container_name: nginx
+    restart: always
     ports:
       - "443:443"
+    volumes:
+      - wordpress_data:/var/www/html:ro
     depends_on:
       - wordpress
     networks:
-      - inception
+      - inception_net
 
 volumes:
   mariadb_data:
   wordpress_data:
 
 networks:
-  inception:
-
+  inception_net:
+    driver: bridge

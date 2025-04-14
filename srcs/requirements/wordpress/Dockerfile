@@ -6,9 +6,9 @@ RUN apt-get update && \
 
 COPY ./tools/setup.sh /setup.sh
 
-RUN chmod +x /setup.sh && /setup.sh
+RUN chmod +x /setup.sh
 
 EXPOSE 9000
 
-CMD ["php-fpm7.4", "-F"]
+CMD ["php-fpm7.4", "-F", "/setup.sh"]
 
