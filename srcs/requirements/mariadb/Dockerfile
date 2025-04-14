@@ -1,9 +1,13 @@
-FROM mariadb:10.5
+FROM debian:bullseye
 
-# Copier la configuration MariaDB (si besoin)
-COPY conf/my.cnf /etc/mysql/my.cnf
+RUN apt-get update && \
+    apt-get install -y mariadb-server && \
+    rm -rf /var/lib/apt/lists/*
 
-# Exposer le port MySQL
+COPY ./tools/setup.sh /setup.sh
+
+RUN chmod +x /setup.sh && /setup.sh
+
 EXPOSE 3306
 
 CMD ["mysqld"]

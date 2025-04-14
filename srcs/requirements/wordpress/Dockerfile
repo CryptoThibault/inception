@@ -1,18 +1,14 @@
-FROM php:fpm-alpine
+FROM debian:bullseye
 
-# Installer les extensions PHP nécessaires
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+RUN apt-get update && \
+    apt-get install -y php php-fpm php-mysql wget unzip && \
+    rm -rf /var/lib/apt/lists/*
 
-# Copier WordPress dans l’image
-COPY wordpress/ /var/www/html/
+COPY ./tools/setup.sh /setup.sh
 
-# Copier la configuration PHP-FPM (facultatif)
-COPY conf/php-fpm.conf /usr/local/etc/php-fpm.conf
+RUN chmod +x /setup.sh && /setup.sh
 
-# Changer les permissions
-RUN chown -R www-data:www-data /var/www/html
-
-# Exposer PHP-FPM (écoute sur le port 9000)
 EXPOSE 9000
 
-CMD ["php-fpm", "-F"]
+CMD ["php-fpm7.4", "-F"]
+
