@@ -44,19 +44,20 @@ services:
     networks:
       - inception_net
 
-  volumes:
-    mariadb_data:
-      driver: local
-      driver_opts:
-        type: none
-        device: /home/tchalaou/data/mariadb
-        o: bind
-    wordpress_data:
-      driver: local
-      driver_opts:
-        type: none
-        device: /home/tchalaou/data/wordpress
-        o: bind
+volumes:
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/tchalaou/data/mariadb
+      o: bind
+
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/tchalaou/data/wordpress
+      o: bind
 
 networks:
   inception_net:
