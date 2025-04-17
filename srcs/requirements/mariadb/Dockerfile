@@ -6,8 +6,6 @@ RUN apt-get update && \
 
 COPY tools/setup.sh /setup.sh
 
-COPY tools/init.sql /docker-entrypoint-initdb.d/
-
 RUN chmod +x /setup.sh
 
 EXPOSE 3306
