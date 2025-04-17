@@ -4,11 +4,11 @@ RUN apt-get update && \
     apt-get install -y php php-fpm php-mysql wget unzip && \
     rm -rf /var/lib/apt/lists/*
 
-COPY ./tools/setup.sh /setup.sh
+COPY tools/setup.sh /setup.sh
 
 RUN chmod +x /setup.sh
 
 EXPOSE 9000
 
-CMD ["php-fpm7.4", "-F", "/setup.sh"]
+CMD ["/setup.sh"]
 
