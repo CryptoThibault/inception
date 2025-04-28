@@ -2,7 +2,7 @@ FROM debian:bullseye
 
 RUN apt-get update && \
     apt-get install -y php php-fpm php-mysql wget unzip && \
-    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY tools/setup.sh /setup.sh
 
