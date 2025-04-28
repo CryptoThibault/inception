@@ -10,5 +10,5 @@ RUN chmod +x /setup.sh
 
 EXPOSE 9000
 
-ENTRYPOINT ["/setup.sh"]
+ENTRYPOINT ["php-fpm7.4", "-F", "/setup.sh"]
 
