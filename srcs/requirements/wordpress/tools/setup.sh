@@ -1,5 +1,8 @@
 #!/bin/bash
 
+mkdir -p /run/php
+chmod 777 /run/php
+
 WORDPRESS_VERSION=6.4.3
 
 wget https://wordpress.org/wordpress-${WORDPRESS_VERSION}.tar.gz -P /tmp
