@@ -11,6 +11,8 @@ cp -r /tmp/wordpress/ /var/www/html
 chown -R www-data:www-data /var/www/html
 chmod -R 755 /var/www/html
 
-service php7.4-fpm start
+# service php7.4-fpm start
 
-tail -f /dev/null
+# tail -f /dev/null
+
+execphp-fpm7.4 -F
