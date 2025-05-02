@@ -5,6 +5,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY tools/setup.sh /setup.sh
+COPY conf/my.cnf /etc/mysql/my.cnf
 
 RUN chmod +x /setup.sh
 
