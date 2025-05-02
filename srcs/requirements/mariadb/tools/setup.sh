@@ -1,14 +1,23 @@
 #!/bin/bash
+set -e
 
-mysqld &
+mkdir -p /run/mysqld
+chown -R mysql:mysql /run/mysqld
 
-until mysqladmin ping --silent; do
-    sleep 1
-done
+if [ ! -d "/var/lib/mysql/mysql" ]; then
+    echo "Initialisation de la base de données..."
+    mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql > /dev/null
+fi
 
-mysql -e "CREATE DATABASE IF NOT EXISTS wordpress;"
-mysql -e "CREATE USER IF NOT EXISTS 'wp_user'@'%' IDENTIFIED BY 'wp_pass';"
-mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wp_user'@'%';"
+mysqld_safe --datadir='/var/lib/mysql' &
+
+sleep 5
+
+mysql -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"
+mysql -e "CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+mysql -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%';"
 mysql -e "FLUSH PRIVILEGES;"
 
-wait
+mysqladmin shutdown
+
+exec mysqld
