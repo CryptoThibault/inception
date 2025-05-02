@@ -4,6 +4,9 @@ set -e
 mkdir -p /run/mysqld
 chown -R mysql:mysql /run/mysqld
 
+echo "[mysqld]" >> /etc/mysql/mariadb.conf.d/50-server.cnf
+echo "bind-address = 0.0.0.0" >> /etc/mysql/mariadb.conf.d/50-server.cnf
+
 if [ ! -d "/var/lib/mysql/mysql" ]; then
     echo "Initialisation de la base de données..."
     mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql > /dev/null
