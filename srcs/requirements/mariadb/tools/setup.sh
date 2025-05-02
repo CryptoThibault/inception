@@ -11,7 +11,9 @@ fi
 
 mysqld_safe --datadir='/var/lib/mysql' &
 
-sleep 5
+until mysqladmin ping --silent; do
+    sleep 1
+done
 
 mysql -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"
 mysql -e "CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
